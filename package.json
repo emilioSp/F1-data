@@ -1,0 +1,43 @@
+{
+  "name": "f1-data",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "homepage": "https://github.com/emilioSp/F1-data#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emilioSp/F1-data.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "scripts": {
+    "hydrate": "node --env-file=.env lib/crawler/index.ts",
+    "hydrate-all": "node --env-file=.env lib/crawler/hydrate_all.ts",
+    "new:migration": "knex migrate:make -x ts",
+    "migrate": "node --env-file=.env ./node_modules/knex/bin/cli.js migrate:latest",
+    "rollback": "node --env-file=.env ./node_modules/knex/bin/cli.js migrate:rollback",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "biome check",
+    "format": "biome format --write",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.1",
+    "@tailwindcss/postcss": "4.3.2",
+    "@types/node": "26.0.1",
+    "@types/pg": "8.20.0",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "tailwindcss": "4.3.2"
+  },
+  "dependencies": {
+    "knex": "3.2.10",
+    "next": "16.2.9",
+    "pg": "8.22.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "typescript": "6.0.3"
+  }
+}
