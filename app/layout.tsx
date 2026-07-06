@@ -1,4 +1,5 @@
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono, Newsreader } from 'next/font/google';
 import Footer from '@/app/components/Footer';
@@ -39,6 +40,7 @@ export default function RootLayout({
         <div>{children}</div>
         <Footer />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
