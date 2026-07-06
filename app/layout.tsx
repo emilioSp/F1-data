@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono, Newsreader } from 'next/font/google';
 import Footer from '@/app/components/Footer';
@@ -37,6 +38,7 @@ export default function RootLayout({
       <body className="grid min-h-full grid-cols-1 grid-rows-[1fr_auto]">
         <div>{children}</div>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
