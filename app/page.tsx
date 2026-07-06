@@ -1,4 +1,5 @@
 import GPSummary from '@/app/components/GPSummary';
+import Logo from '@/app/components/Logo';
 import YearSelector from '@/app/components/YearSelector';
 import GPSummaryRepository from '@/app/repository/gp_summary.repository';
 
@@ -12,7 +13,8 @@ export default async function SeasonPage(props: PageProps<'/'>) {
   return (
     <div className="min-h-screen bg-cream text-ink">
       <header className="sticky top-0 z-20 border-b border-border bg-cream/86 backdrop-blur-[10px]">
-        <div className="mx-auto grid max-w-[1300px] grid-cols-[1fr_auto] items-end gap-6 px-8 py-[18px]">
+        <div className="mx-auto grid max-w-[1300px] grid-cols-[auto_1fr_auto] items-end gap-6 px-8 py-[18px]">
+          <Logo size={44} />
           <div>
             <div className="text-[11px] font-sans font-semibold tracking-[.26em] text-red">
               FORMULA 1

@@ -1,4 +1,5 @@
 import GPDetailView from '@/app/components/GPDetailView';
+import Logo from '@/app/components/Logo';
 import GPDetailsRepository from '@/app/repository/gp_details.repository';
 import { DB_SESSION_TYPES } from '@/lib/crawler/types';
 
@@ -34,13 +35,16 @@ export default async function GPDetailPage(props: PageProps<'/gp/[key]'>) {
 
   return (
     <div className="mx-auto max-w-[1300px] px-8 py-[26px]">
-      <a
-        href={`/?year=${raceSessionDetails.year}`}
-        className="mb-[22px] inline-block font-sans font-medium text-red"
-        style={{ fontSize: '13px' }}
-      >
-        ← All Grands Prix
-      </a>
+      <div className="mb-[22px] grid grid-cols-[auto_1fr] items-center gap-[14px]">
+        <Logo size={34} />
+        <a
+          href={`/?year=${raceSessionDetails.year}`}
+          className="font-sans font-medium text-red"
+          style={{ fontSize: '13px' }}
+        >
+          ← All Grands Prix
+        </a>
+      </div>
 
       <GPDetailView
         qualifyingSessionDetails={qualifyingSessionDetails}
