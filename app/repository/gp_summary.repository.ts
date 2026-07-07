@@ -25,7 +25,7 @@ const GPSummaryRepository = {
         'd_pole.team_name as pole_team',
         'd_pole.team_color as pole_team_color',
       )
-      .from('grand_prixs as gp')
+      .from('grands_prix as gp')
       .leftJoin('sessions as s_race', function () {
         this.on('s_race.gp_id', '=', 'gp.id').andOn(
           's_race.type',
@@ -79,7 +79,7 @@ const GPSummaryRepository = {
           'd_pole.team_name as pole_team',
           'd_pole.team_color as pole_team_color',
         )
-          .from('grand_prixs as gp')
+          .from('grands_prix as gp')
           .leftJoin('sessions as s_race', function () {
             this.on('s_race.gp_id', '=', 'gp.id').andOn(
               's_race.type',

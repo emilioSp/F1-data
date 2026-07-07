@@ -3,7 +3,7 @@ import {
   NAME_TYPES,
   SESSION_TYPES,
 } from '../api_types/season.ts';
-import GrandPrixsRepository from '../repository/grand_prixs.repository.ts';
+import GrandsPrixRepository from '../repository/grands_prix.repository.ts';
 import SessionNotFound from '../session_not_found.error.ts';
 
 type MeetingWithYear = Meeting & {
@@ -41,7 +41,7 @@ const GrandPrixService = {
       (s) => s.Type === SESSION_TYPES.RACE && s.Name === NAME_TYPES.SPRINT,
     );
 
-    return await GrandPrixsRepository.upsert({
+    return await GrandsPrixRepository.upsert({
       id: gp.Key,
       year: gp.year,
       number: gp.Number,

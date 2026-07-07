@@ -18,11 +18,11 @@ Formula 1's own live-timing API via a custom crawler.
 
 ## Database schema (`migrations/`)
 Five tables, all upserts keyed for idempotent re-crawling:
-- **`grand_prixs`** — one row per GP weekend. `id` is F1's own numeric `Meeting.Key` (not
+- **`grands_prix`** — one row per GP weekend. `id` is F1's own numeric `Meeting.Key` (not
   generated). `UNIQUE(year, name)`. Nullable `sprint_qualifying_path`/`sprint_path` (not every GP
   has a sprint).
 - **`sessions`** — one row per session (qualifying/race/sprint/sprint_qualifying) within a GP.
-  `type` is a Postgres ENUM `session_type`. `id` is F1's own session key. FK → `grand_prixs`.
+  `type` is a Postgres ENUM `session_type`. `id` is F1's own session key. FK → `grands_prix`.
   `UNIQUE(gp_id, type)` — exactly one session per type per GP. Stores UTC (`start_date`,
   `TIMESTAMPTZ`) and local wall-clock (`start_date_local`, `TIMESTAMP`) times, plus weather
   (`air_temp`, `track_temp`, `humidity`, all `NUMERIC(5,2)`).
@@ -40,7 +40,7 @@ Fetches from `https://livetiming.formula1.com/static/` (F1's live-timing static 
 - `hydrate_all.ts` — spawns `index.ts` once per year in `AVAILABLE_YEARS`.
 - `fetch.ts` — thin fetch wrapper: base URL + 100ms throttle + error logging.
 - `service/` — orchestration per concern:
-  - `grand_prixs.service.ts` picks the right session paths off F1's raw `Meeting.Sessions`
+  - `grands_prix.service.ts` picks the right session paths off F1's raw `Meeting.Sessions`
     (handles sprint vs. sprint-shootout naming differences across seasons).
   - `drivers.service.ts` caches driver upserts in-memory per crawl run (keyed
     `${name}|${team}`) so the same driver isn't inserted twice.

@@ -30,7 +30,7 @@ const GPDetailsRepository = {
         'qr.q3_time',
         'qr.knocked_out',
       )
-      .from('grand_prixs as gp')
+      .from('grands_prix as gp')
       .innerJoin('sessions as s', 's.gp_id', 'gp.id')
       .innerJoin('qualifying_results as qr', 'qr.session_id', 's.id')
       .innerJoin('drivers as d', 'd.id', 'qr.driver_id')
@@ -63,7 +63,7 @@ const GPDetailsRepository = {
         'rr.dnf',
         'rr.number_of_pit_stops',
       )
-      .from('grand_prixs as gp')
+      .from('grands_prix as gp')
       .innerJoin('sessions as s', 's.gp_id', 'gp.id')
       .innerJoin('race_results as rr', 'rr.session_id', 's.id')
       .innerJoin('drivers as d', 'd.id', 'rr.driver_id')
@@ -93,7 +93,7 @@ const GPDetailsRepository = {
         's.track_temp',
         's.humidity',
       )
-      .from('grand_prixs as gp')
+      .from('grands_prix as gp')
       .innerJoin('sessions as s', 's.gp_id', 'gp.id')
       .where('gp.id', gpId)
       .where('s.type', sessionType)

@@ -14,7 +14,7 @@ export async function up(knex: Knex): Promise<void> {
     CREATE TABLE IF NOT EXISTS sessions (
         id INTEGER PRIMARY KEY,
         type session_type NOT NULL,
-        gp_id INTEGER NOT NULL REFERENCES grand_prixs(id),
+        gp_id INTEGER NOT NULL REFERENCES grands_prix(id),
         start_date TIMESTAMPTZ NOT NULL,
         end_date TIMESTAMPTZ NOT NULL,
         start_date_local TIMESTAMP NOT NULL,

@@ -2,7 +2,7 @@ import type { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
   await knex.raw(`
-    CREATE TABLE IF NOT EXISTS grand_prixs (
+    CREATE TABLE IF NOT EXISTS grands_prix (
         id INTEGER PRIMARY KEY,
         number INTEGER NOT NULL,
         year INTEGER NOT NULL,
@@ -22,6 +22,6 @@ export async function up(knex: Knex): Promise<void> {
 
 export async function down(knex: Knex): Promise<void> {
   await knex.raw(`
-    DROP TABLE IF EXISTS grand_prixs;
+    DROP TABLE IF EXISTS grands_prix;
   `);
 }

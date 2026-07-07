@@ -42,13 +42,13 @@ is safe and idempotent.
 
 ```mermaid
 erDiagram
-    GRAND_PRIXS ||--o{ SESSIONS : has
+    GRANDS_PRIX ||--o{ SESSIONS : has
     SESSIONS ||--o{ QUALIFYING_RESULTS : has
     SESSIONS ||--o{ RACE_RESULTS : has
     DRIVERS ||--o{ QUALIFYING_RESULTS : has
     DRIVERS ||--o{ RACE_RESULTS : has
 
-    GRAND_PRIXS {
+    GRANDS_PRIX {
         int id PK
         int number
         int year
@@ -110,7 +110,7 @@ erDiagram
     }
 ```
 
-`grand_prixs` and `sessions` use F1's own numeric IDs as primary keys (not generated); `drivers`,
+`grands_prix` and `sessions` use F1's own numeric IDs as primary keys (not generated); `drivers`,
 `qualifying_results`, and `race_results` use generated UUIDs. See `migrations/` for the full DDL.
 
 ## How to run it

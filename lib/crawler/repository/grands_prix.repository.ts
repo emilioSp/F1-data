@@ -1,7 +1,7 @@
 import db from '../../db.ts';
 import type { GrandPrix } from '../types.ts';
 
-const TABLE_NAME = 'grand_prixs';
+const TABLE_NAME = 'grands_prix';
 
 type GrandPrixRow = {
   id: number;
@@ -18,7 +18,7 @@ type GrandPrixRow = {
   race_path: string;
 };
 
-const GrandPrixsRepository = {
+const GrandsPrixRepository = {
   upsert: async (gp: GrandPrixRow): Promise<GrandPrix> => {
     try {
       const [row] = await db(TABLE_NAME)
@@ -34,4 +34,4 @@ const GrandPrixsRepository = {
   },
 };
 
-export default GrandPrixsRepository;
+export default GrandsPrixRepository;

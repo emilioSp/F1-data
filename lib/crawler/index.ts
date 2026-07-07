@@ -2,7 +2,7 @@ import db from '../db.ts';
 import type { Season } from './api_types/season.ts';
 import fetch from './fetch.ts';
 import DriversService from './service/drivers.service.ts';
-import GrandPrixService from './service/grand_prixs.service.ts';
+import GrandPrixService from './service/grands_prix.service.ts';
 import QualifyingService from './service/qualifying.service.ts';
 import RaceService from './service/race.service.ts';
 import SessionNotFound from './session_not_found.error.ts';
