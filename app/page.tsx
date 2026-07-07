@@ -2,13 +2,15 @@ import GPSummary from '@/app/components/GPSummary';
 import Logo from '@/app/components/Logo';
 import YearSelector from '@/app/components/YearSelector';
 import GPSummaryRepository from '@/app/repository/gp_summary.repository';
+import { AVAILABLE_SEASONS } from '@/lib/years';
 
 export default async function SeasonPage(props: PageProps<'/'>) {
-  const year = ((await props.searchParams)?.year as string) ?? '2026';
+  const year =
+    ((await props.searchParams)?.year as string) ?? AVAILABLE_SEASONS.at(-1);
   const today = new Date();
-  const isCurrent = today.getFullYear() === Number(year);
+  const isCurrent = today.getFullYear() === year;
 
-  const gpSummaries = await GPSummaryRepository.get(year);
+  const gpSummaries = await GPSummaryRepository.get(year.toString());
 
   return (
     <div className="min-h-screen bg-cream text-ink">

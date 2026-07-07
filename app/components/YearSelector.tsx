@@ -1,6 +1,6 @@
 'use client';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { AVAILABLE_YEARS } from '@/lib/years';
+import { AVAILABLE_SEASONS } from '@/lib/years';
 
 export default function YearSelector() {
   const searchParams = useSearchParams();
@@ -12,7 +12,7 @@ export default function YearSelector() {
       value={year}
       onChange={(e) => router.push(`?year=${e.target.value}`)}
     >
-      {AVAILABLE_YEARS.map((y) => (
+      {AVAILABLE_SEASONS.map((y) => (
         <option key={y}>{y}</option>
       ))}
     </select>
