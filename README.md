@@ -1,4 +1,4 @@
-# F1 Data
+# gpdata
 
 > **Disclaimer:** This is an unofficial, fan-made project built for personal/educational use.
 > It is not affiliated with, endorsed by, or connected in any way to Formula 1, Formula One

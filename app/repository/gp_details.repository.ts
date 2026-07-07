@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import type {
   GPDetailsQualifyingResults,
   GPDetailsRaceResults,
@@ -100,5 +101,12 @@ const GPDetailsRepository = {
       .first();
   },
 };
+
+export const getCachedSessionDetails = cache(
+  (
+    gpId: number,
+    sessionType: (typeof DB_SESSION_TYPES)[keyof typeof DB_SESSION_TYPES],
+  ) => GPDetailsRepository.getSessionDetails({ gpId, sessionType }),
+);
 
 export default GPDetailsRepository;

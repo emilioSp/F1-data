@@ -1,13 +1,42 @@
+import type { Metadata } from 'next';
 import GPDetailView from '@/app/components/GPDetailView';
 import Logo from '@/app/components/Logo';
-import GPDetailsRepository from '@/app/repository/gp_details.repository';
+import GPDetailsRepository, {
+  getCachedSessionDetails,
+} from '@/app/repository/gp_details.repository';
 import { DB_SESSION_TYPES } from '@/lib/crawler/types';
 
-export default async function GPDetailPage(props: PageProps<'/gp/[key]'>) {
-  const { key } = await props.params;
+function parseKey(key: string) {
   const [idStr, type] = key.split('-');
   const gpId = Number(idStr);
   const isSprint = type === 'sprint';
+  return { gpId, isSprint };
+}
+
+export async function generateMetadata(
+  props: PageProps<'/gp/[key]'>,
+): Promise<Metadata> {
+  const { key } = await props.params;
+  const { gpId, isSprint } = parseKey(key);
+
+  const raceSessionDetails = await getCachedSessionDetails(
+    gpId,
+    isSprint ? DB_SESSION_TYPES.SPRINT : DB_SESSION_TYPES.RACE,
+  );
+
+  if (!raceSessionDetails) {
+    return { title: 'Grand Prix' };
+  }
+
+  return {
+    title: `${raceSessionDetails.name} ${raceSessionDetails.year}`,
+    description: `${raceSessionDetails.officialName} — qualifying (Q1/Q2/Q3) and race results, weather, and timing.`,
+  };
+}
+
+export default async function GPDetailPage(props: PageProps<'/gp/[key]'>) {
+  const { key } = await props.params;
+  const { gpId, isSprint } = parseKey(key);
 
   const [
     qualifyingSessionDetails,
@@ -21,10 +50,10 @@ export default async function GPDetailPage(props: PageProps<'/gp/[key]'>) {
         ? DB_SESSION_TYPES.SPRINT_QUALIFYING
         : DB_SESSION_TYPES.QUALIFYING,
     }),
-    GPDetailsRepository.getSessionDetails({
+    getCachedSessionDetails(
       gpId,
-      sessionType: isSprint ? DB_SESSION_TYPES.SPRINT : DB_SESSION_TYPES.RACE,
-    }),
+      isSprint ? DB_SESSION_TYPES.SPRINT : DB_SESSION_TYPES.RACE,
+    ),
     GPDetailsRepository.getSprintQualifyingResults({ gpId, isSprint }),
     GPDetailsRepository.getRaceResults({ gpId, isSprint }),
   ]);

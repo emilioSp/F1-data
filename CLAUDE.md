@@ -1,4 +1,4 @@
-# F1 Data — Project Notes
+# gpdata — Project Notes
 
 Next.js app (App Router, React 19, TypeScript) + Postgres, showing F1 season/GP data pulled from
 Formula 1's own live-timing API via a custom crawler.

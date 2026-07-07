@@ -3,6 +3,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono, Newsreader } from 'next/font/google';
 import Footer from '@/app/components/Footer';
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
 import './globals.css';
 
 const inter = Inter({
@@ -22,8 +23,34 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'F1 Data',
-  description: 'Formula 1 season data',
+  title: {
+    default: 'gpdata — Formula 1 Season & GP Data Archive',
+    template: '%s — gpdata',
+  },
+  description: SITE_DESCRIPTION,
+  metadataBase: new URL(SITE_URL),
+  keywords: [
+    'Formula 1',
+    'F1 results',
+    'F1 qualifying',
+    'Grand Prix results',
+    'F1 season archive',
+    'gpdata',
+  ],
+  openGraph: {
+    type: 'website',
+    siteName: SITE_NAME,
+    title: 'gpdata — Formula 1 Season & GP Data Archive',
+    description: SITE_DESCRIPTION,
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

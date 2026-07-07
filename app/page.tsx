@@ -1,8 +1,23 @@
+import type { Metadata } from 'next';
 import GPSummary from '@/app/components/GPSummary';
 import Logo from '@/app/components/Logo';
 import YearSelector from '@/app/components/YearSelector';
 import GPSummaryRepository from '@/app/repository/gp_summary.repository';
 import { AVAILABLE_SEASONS } from '@/lib/years';
+
+export async function generateMetadata(
+  props: PageProps<'/'>,
+): Promise<Metadata> {
+  const year =
+    ((await props.searchParams)?.year as string) ?? AVAILABLE_SEASONS.at(-1);
+
+  return {
+    // Next.js doesn't apply the root layout's title template to the index
+    // route (`/`) itself, only to nested routes — compose the full title here.
+    title: `${year} Season — gpdata`,
+    description: `Full ${year} Formula 1 Grand Prix calendar — race winners, pole positions, and weather for every round.`,
+  };
+}
 
 export default async function SeasonPage(props: PageProps<'/'>) {
   const year =

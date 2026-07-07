@@ -1,7 +1,23 @@
-import type { GpSummary } from '@/app/types';
+import type { GpSitemapEntry, GpSummary } from '@/app/types';
 import db from '@/lib/db';
 
 const GPSummaryRepository = {
+  getAllKeys: async (): Promise<GpSitemapEntry[]> => {
+    return db
+      .select<GpSitemapEntry[]>(
+        'gp.id',
+        'gp.number',
+        'gp.year',
+        's.type',
+        's.start_date',
+      )
+      .from('grands_prix as gp')
+      .innerJoin('sessions as s', 's.gp_id', 'gp.id')
+      .whereIn('s.type', ['race', 'sprint'])
+      .orderBy('gp.year')
+      .orderBy('gp.number');
+  },
+
   get: async (year: string): Promise<GpSummary[]> => {
     const rows = (await db
       .select(
