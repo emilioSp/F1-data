@@ -51,9 +51,7 @@ Fetches from `https://livetiming.formula1.com/static/` (F1's live-timing static 
   which holds the DB-row types).
 
 `lib/years.ts` — `AVAILABLE_YEARS = [2018, 2019, 2020, 2021, 2023, 2024, 2025, 2026]` (2022 is
-missing; matches what's actually hydrated in Postgres). `lib/mock/season2026.ts` was a
-deterministic mock-data generator used only for the early UI draft — dead code, not imported
-anywhere, being removed.
+missing; matches what's actually hydrated in Postgres).
 
 ## App (`app/`)
 - **Grid view** (`app/page.tsx` + `app/components/GPSummary.tsx`) — **implemented and verified
@@ -61,26 +59,27 @@ anywhere, being removed.
   sponsor names, winners, poles, team colors). Reads via `GPSummaryRepository.get(year)`
   (`app/repository/gp_summary.repository.ts`), which unions race-session and sprint-session rows
   per GP, each joined to its P1 driver for winner/pole.
-- **Detail view** (`app/gp/[key]/page.tsx`) — **stub only**, always renders "Detail view coming
-  soon" regardless of GP. The repository layer it needs already exists and returns real data:
-  `GPDetailsRepository` (`app/repository/gp_details.repository.ts`) has
-  `getSprintQualifyingResults`, `getRaceResults`, `getSessionDetails` — this is the main gap
-  between the design and the current app.
+- **Detail view** (`app/gp/[key]/page.tsx` + `app/components/GPDetailView.tsx`) — **implemented
+  and finished**. Renders GP header/weather (`GPInfo.tsx`, `WeatherData.tsx`), a client-side
+  Qualifying/Race (or Sprint Qualifying/Sprint for sprint weekends) tab switch, and results tables
+  (`TableQualifyingResults.tsx` with Q1/Q2/Q3, `TableRaceResults.tsx` with gap/best lap/pit
+  stops/fastest-lap badge). Backed by `GPDetailsRepository`
+  (`app/repository/gp_details.repository.ts`) — `getSprintQualifyingResults`, `getRaceResults`,
+  `getSessionDetails`.
 - `app/types.ts` — `GpSummary`, `GPDetailsQualifyingResults`, `GPDetailsRaceResults`,
   `GPSessionDetails`.
+
+## Deployment
+Live at [gpdata.app](https://gpdata.app/).
 
 ## Design bundle (`f1-data-website-design/`)
 Claude Design (claude.ai/design) handoff — HTML/CSS/JS prototypes to recreate pixel-perfectly in
 the real stack, not to copy structurally.
-- `project/F1 Season.dc.html` — primary design. Grid view (already matches `GPSummary.tsx`,
-  "Editorial" style — Newsreader/Inter fonts, cream background, red accent) and **Detail view**
-  (not yet built): back link, header with round/kind label + weather box, tabs
+- `project/F1 Season.dc.html` — primary design. Grid view (matches `GPSummary.tsx`, "Editorial"
+  style — Newsreader/Inter fonts, cream background, red accent) and Detail view (now built as
+  `GPDetailView.tsx` + friends): back link, header with round/kind label + weather box, tabs
   (Qualifying/Race or Sprint Qualifying/Sprint), Q1/Q2/Q3 table, race results table with gap/best
   lap/pits/fastest-lap badge.
 - `project/GP Tile Explorations.dc.html` — 3 earlier tile-style explorations (Broadcast/dark,
   Editorial/light, Telemetry/mono); Editorial won.
 - `support.js` — generated DC runtime, not project-specific, no need to read closely.
-
-## Known gaps
-- GP detail page implementation (see above) — the clear next piece of work.
-- `lib/mock/season2026.ts` scheduled for removal (dead code, UI-draft-only).

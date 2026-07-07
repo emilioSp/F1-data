@@ -12,9 +12,10 @@ A browsable archive of Formula 1 season data: every Grand Prix weekend (race, qu
 sprint sessions where applicable) from 2018 onward, with results, weather, and timing pulled
 from F1's own live-timing service into a local database.
 
-Today the season/calendar grid view is fully working end-to-end. The per-GP detail page
-(full qualifying/race classification with Q1/Q2/Q3 and lap-by-lap breakdown) is still under
-construction.
+The season/calendar grid view and the per-GP detail page (full qualifying/race classification
+with Q1/Q2/Q3 breakdown, weather, and results tables) are both fully working end-to-end.
+
+Live at [gpdata.app](https://gpdata.app/).
 
 ## Prerequisites
 
@@ -33,7 +34,9 @@ is safe and idempotent.
 **UI** — a [Next.js](https://nextjs.org/) app reads directly from Postgres to render:
 - a season grid (`/`) — one tile per race/sprint weekend, with round info, winner, pole,
   and weather at a glance, filterable by year
-- a per-GP detail page (`/gp/[key]`) — full session breakdown (in progress)
+- a per-GP detail page (`/gp/[key]`) — full session breakdown: weather, a Qualifying/Race
+  (or Sprint Qualifying/Sprint) tab switch, Q1/Q2/Q3 classification, and race results with
+  gap/best lap/pit stops/fastest-lap badge
 
 ### Database schema
 
