@@ -1,0 +1,34 @@
+# gpdata
+
+> gpdata is an unofficial, fan-made archive of Formula 1 season and Grand Prix
+> data — race results, qualifying classifications, sprint sessions, and weather —
+> sourced from F1's own public live-timing feeds. Built for personal/educational,
+> non-commercial use.
+
+## About
+
+gpdata is not affiliated with, endorsed by, or connected to Formula 1, Formula
+One Management, the FIA, or any F1 team, driver, or sponsor. All F1-related
+names, logos, and marks are the property of their respective owners.
+
+## Data
+
+Covers every Grand Prix weekend from 2018 onward (2022 is not currently
+available). For each weekend: qualifying (Q1/Q2/Q3, or Sprint Qualifying for
+sprint weekends), race (or Sprint) results with gaps, best lap, pit stops, and
+fastest-lap markers, plus session weather (air/track temperature, humidity).
+Data is pulled directly from F1's live-timing static API and normalized into a
+Postgres database.
+
+## Pages
+
+- [/](https://gpdata.app/): season grid — one tile per race/sprint weekend for
+  a selected year, with round info, winner, pole, and weather at a glance.
+- /gp/[key]: per-Grand-Prix detail page — full qualifying and race
+  classification, weather, and a Qualifying/Race (or Sprint
+  Qualifying/Sprint) tab switch.
+
+## Notes
+
+Non-commercial, informational use only. No user accounts, no data submission —
+gpdata is read-only, sourced entirely from F1's own live-timing service.

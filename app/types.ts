@@ -20,6 +20,14 @@ export type GpSummary = {
   year: number;
 };
 
+export type GpSitemapEntry = {
+  id: number;
+  number: number;
+  year: number;
+  type: 'race' | 'sprint';
+  startDate: string;
+};
+
 export type GPDetailsQualifyingResults = {
   position: number;
   driverName: string;

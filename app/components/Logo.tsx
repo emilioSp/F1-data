@@ -4,7 +4,7 @@ export default function Logo({ size = 36 }: { size?: number }) {
   return (
     <a
       href="/"
-      aria-label="F1 Data — home"
+      aria-label="gpdata — home"
       className="grid shrink-0 place-items-center rounded-[8px] border border-card-border bg-card"
       style={{ width: size, height: size }}
     >
@@ -15,7 +15,7 @@ export default function Logo({ size = 36 }: { size?: number }) {
         fill="none"
         className="text-red"
       >
-        <title>F1 Data</title>
+        <title>gpdata</title>
         <path
           d={APEX_PATH}
           stroke="currentColor"
