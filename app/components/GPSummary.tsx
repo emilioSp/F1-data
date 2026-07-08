@@ -1,7 +1,9 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import type { GpSummary } from '@/app/types';
 import { fmtDate } from '@/app/utils/date';
 import { getFlag } from '@/app/utils/flags';
+import { getHeadshotUrl } from '@/lib/images';
 
 const isSprint = (type: GpSummary['type']) => type === 'sprint';
 
@@ -57,12 +59,14 @@ export default function GPSummary({ gpSummary }: { gpSummary: GpSummary }) {
             name={gpSummary.winnerName}
             team={gpSummary.winnerTeamName}
             color={gpSummary.winnerTeamColor}
+            headshotUrl={gpSummary.winnerHeadshotUrl}
           />
           <DriverColumn
             label={isSprint(gpSummary.type) ? 'SPRINT POLE' : 'POLE'}
             name={gpSummary.poleName}
             team={gpSummary.poleTeamName}
             color={gpSummary.poleTeamColor}
+            headshotUrl={gpSummary.poleHeadshotUrl}
           />
         </div>
 
@@ -93,21 +97,30 @@ function DriverColumn({
   name,
   team,
   color,
+  headshotUrl,
 }: {
   label: string;
   name: string;
   team: string;
   color: string;
+  headshotUrl: string;
 }) {
   return (
     <div className="min-w-0">
       <div className="mb-[6px] text-[9.5px] font-sans font-medium tracking-[.16em] text-faint">
         {label}
       </div>
-      <div className="grid grid-cols-[auto_1fr] items-center gap-2">
+      <div className="grid grid-cols-[auto_auto_1fr] items-center gap-2">
         <span
           className="h-[28px] w-[3px] shrink-0 rounded-[2px]"
           style={{ background: `#${color}` }}
+        />
+        <Image
+          src={getHeadshotUrl(headshotUrl)}
+          alt={name}
+          width={36}
+          height={36}
+          className="h-[36px] w-[36px] rounded-full border border-card-border bg-cream object-cover"
         />
         <div className="min-w-0">
           <div className="overflow-hidden text-ellipsis whitespace-nowrap text-[15px] font-serif font-medium text-ink">

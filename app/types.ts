@@ -5,9 +5,11 @@ export type GpSummary = {
   winnerName: string;
   winnerTeamName: string;
   winnerTeamColor: string;
+  winnerHeadshotUrl: string;
   poleName: string;
   poleTeamName: string;
   poleTeamColor: string;
+  poleHeadshotUrl: string;
   id: number;
   location: string;
   number: number;

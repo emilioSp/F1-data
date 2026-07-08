@@ -35,11 +35,13 @@ const GPSummaryRepository = {
         's_race.track_temp as race_track_temp',
         's_race.humidity as race_humidity',
         db.raw('initcap(d_winner.name) as winner_name'),
-        'd_winner.team_name as winner_team',
+        'd_winner.team_name as winner_team_name',
         'd_winner.team_color as winner_team_color',
+        'd_winner.headshot_url as winner_headshot_url',
         db.raw('initcap(d_pole.name) as pole_name'),
-        'd_pole.team_name as pole_team',
+        'd_pole.team_name as pole_team_name',
         'd_pole.team_color as pole_team_color',
+        'd_pole.headshot_url as pole_headshot_url',
       )
       .from('grands_prix as gp')
       .leftJoin('sessions as s_race', function () {
@@ -89,11 +91,13 @@ const GPSummaryRepository = {
           's_race.track_temp as race_track_temp',
           's_race.humidity as race_humidity',
           db.raw('initcap(d_winner.name) as winner_name'),
-          'd_winner.team_name as winner_team',
+          'd_winner.team_name as winner_team_name',
           'd_winner.team_color as winner_team_color',
+          'd_winner.headshot_url as winner_headshot_url',
           db.raw('initcap(d_pole.name) as pole_name'),
-          'd_pole.team_name as pole_team',
+          'd_pole.team_name as pole_team_name',
           'd_pole.team_color as pole_team_color',
+          'd_pole.headshot_url as pole_headshot_url',
         )
           .from('grands_prix as gp')
           .leftJoin('sessions as s_race', function () {
