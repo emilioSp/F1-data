@@ -1,7 +1,7 @@
 import Driver from '@/app/components/Driver';
 import type { GPDetailsQualifyingResults } from '@/app/types';
 
-const COLS = 'grid-cols-[40px_1fr_110px_110px_110px]';
+const COLS = 'grid-cols-[40px_1fr_76px_76px_76px]';
 
 export default function TableQualifyingResults({
   results,
@@ -10,7 +10,7 @@ export default function TableQualifyingResults({
 }) {
   return (
     <div className="overflow-x-auto rounded-[8px] border border-card-border bg-card">
-      <div className="min-w-[640px]">
+      <div className="min-w-[520px]">
         <div
           className={`grid ${COLS} items-center border-b border-divider px-5 py-[13px] text-[10px] font-sans font-medium tracking-[.14em] text-faint`}
         >
@@ -33,6 +33,7 @@ export default function TableQualifyingResults({
               racingNumber={r.racingNumber}
               teamName={r.teamName}
               teamColor={r.teamColor}
+              headshotUrl={r.headshotUrl}
             />
             <div
               className={`text-right font-mono text-[13px] ${r.q1Time ? 'text-taupe' : 'text-faint'}`}

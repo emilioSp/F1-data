@@ -34,6 +34,7 @@ export type GPDetailsQualifyingResults = {
   racingNumber: number;
   teamName: string;
   teamColor: string;
+  headshotUrl: string;
   q1Time: string;
   q2Time: string;
   q3Time: string;
@@ -46,6 +47,7 @@ export type GPDetailsRaceResults = {
   racingNumber: number;
   teamName: string;
   teamColor: string;
+  headshotUrl: string;
   bestLaptime: string;
   gapToLeader: string;
   gapToPositionAhead: string;

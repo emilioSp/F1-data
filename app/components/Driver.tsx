@@ -1,28 +1,40 @@
+import Image from 'next/image';
+import { getHeadshotUrl } from '@/lib/images';
+
 export default function Driver({
   driverName,
   racingNumber,
   teamName,
   teamColor,
+  headshotUrl,
   dnf = false,
 }: {
   driverName: string;
   racingNumber: number;
   teamName: string;
   teamColor: string;
+  headshotUrl: string;
   dnf?: boolean;
 }) {
   return (
-    <div className="grid grid-cols-[5px_auto] items-center gap-x-[11px] gap-y-[2px] min-w-0 min-[950px]:grid-cols-[5px_minmax(100px,300px)_auto] min-[950px]:gap-[11px]">
+    <div className="grid min-w-0 grid-cols-[3px_auto_1fr] items-center gap-x-[11px] gap-y-[2px]">
       <span
-        className="col-start-1 row-start-1 row-span-2 h-[22px] w-[3px] shrink-0 rounded-[2px] min-[950px]:row-span-1"
+        className="row-span-2 h-[34px] w-[3px] rounded-[2px]"
         style={{ background: `#${teamColor}` }}
       />
+      <Image
+        src={getHeadshotUrl(headshotUrl)}
+        alt={driverName}
+        width={48}
+        height={48}
+        className="row-span-2 h-[48px] w-[48px] rounded-full border border-card-border bg-cream object-cover"
+      />
       <span
-        className={`col-start-2 row-start-1 overflow-hidden text-ellipsis whitespace-nowrap font-serif text-[15px] font-medium ${dnf ? 'text-muted' : 'text-ink'}`}
+        className={`overflow-hidden text-ellipsis whitespace-nowrap font-serif text-[15px] font-medium ${dnf ? 'text-muted' : 'text-ink'}`}
       >
         {driverName}
       </span>
-      <span className="col-start-2 row-start-2 font-mono text-[11px] text-faint min-[950px]:col-start-3 min-[950px]:row-start-1">
+      <span className="overflow-hidden text-ellipsis whitespace-nowrap font-mono text-[11px] text-faint">
         #{racingNumber} · {teamName}
       </span>
     </div>

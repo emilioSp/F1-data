@@ -1,7 +1,7 @@
 import Driver from '@/app/components/Driver';
 import type { GPDetailsRaceResults } from '@/app/types';
 
-const COLS = 'grid-cols-[40px_1fr_100px_100px_120px_70px]';
+const COLS = 'grid-cols-[40px_1fr_76px_84px_88px_44px]';
 
 export default function TableRaceResults({
   results,
@@ -10,7 +10,7 @@ export default function TableRaceResults({
 }) {
   return (
     <div className="overflow-x-auto rounded-[8px] border border-card-border bg-card">
-      <div className="min-w-[700px]">
+      <div className="min-w-[580px]">
         <div
           className={`grid ${COLS} items-center border-b border-divider px-5 py-[13px] text-[10px] font-sans font-medium tracking-[.14em] text-faint`}
         >
@@ -36,6 +36,7 @@ export default function TableRaceResults({
               racingNumber={r.racingNumber}
               teamName={r.teamName}
               teamColor={r.teamColor}
+              headshotUrl={r.headshotUrl}
               dnf={r.dnf}
             />
             <div className="text-right font-mono text-[13px] text-dark">

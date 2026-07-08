@@ -26,6 +26,7 @@ const GPDetailsRepository = {
         'd.racing_number',
         'd.team_name',
         'd.team_color',
+        'd.headshot_url',
         'qr.q1_time',
         'qr.q2_time',
         'qr.q3_time',
@@ -54,6 +55,7 @@ const GPDetailsRepository = {
         'd.racing_number',
         'd.team_name',
         'd.team_color',
+        'd.headshot_url',
         'rr.best_laptime',
         db.raw(
           "CASE WHEN rr.position = 1 THEN 'LEADER' ELSE rr.gap_to_leader END as gap_to_leader",
