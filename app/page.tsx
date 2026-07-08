@@ -23,7 +23,7 @@ export default async function SeasonPage(props: PageProps<'/'>) {
   const year =
     ((await props.searchParams)?.year as string) ?? AVAILABLE_SEASONS.at(-1);
   const today = new Date();
-  const isCurrent = today.getFullYear() === year;
+  const isCurrent = today.getFullYear() === Number(year);
 
   const gpSummaries = await GPSummaryRepository.get(year.toString());
 
