@@ -1,0 +1,29 @@
+name: crawler
+
+on:
+  schedule:
+    - cron: "0 3,12,20 * * *" # minute 0 of hours 3, 12, and 20, every day — i.e. 03:00, 12:00, and 20:00.
+  workflow_dispatch: {}
+
+jobs:
+  crawler:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 26
+          package-manager-cache: false # Disable automatic npm caching if not required
+      - name: install dependencies
+        run: npm ci
+      - name: Create .env file
+        run: |
+          rm -f .env
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
+          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
+          echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> .env
+          echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> .env
+      - name: Fetch gp data
+        run: npm run hydrate

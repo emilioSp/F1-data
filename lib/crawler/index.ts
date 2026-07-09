@@ -1,4 +1,5 @@
 import db from '../db.ts';
+import { AVAILABLE_SEASONS } from '../years.ts';
 import type { Season } from './api_types/season.ts';
 import fetch from './fetch.ts';
 import DriversService from './service/drivers.service.ts';
@@ -8,15 +9,39 @@ import RaceService from './service/race.service.ts';
 import SessionNotFound from './session_not_found.error.ts';
 import type { GrandPrix } from './types.ts';
 
-const year = process.argv[2];
-if (!year || !/^\d{4}$/.test(year)) {
-  console.error('Usage: index.ts <year>  e.g. index.ts 2025');
-  process.exit(1);
+const LAST_GP_TO_FETCH = 3;
+
+const detectMode = () => {
+  const seasonArg: string = process.argv[2];
+
+  if (!seasonArg || !/^\d{4}$/.test(seasonArg)) {
+    return {
+      cronMode: true,
+      seasonYear: AVAILABLE_SEASONS.at(-1),
+    };
+  }
+
+  return {
+    seasonYear: seasonArg,
+    cronMode: false,
+  };
+};
+
+const { seasonYear, cronMode } = detectMode();
+
+if (cronMode) {
+  console.log(
+    `Cron mode activated. Fetch last ${LAST_GP_TO_FETCH} GP, season ${seasonYear}`,
+  );
 }
 
-const season = await fetch<Season>(`${year}/Index.json`);
+const season = await fetch<Season>(`${seasonYear}/Index.json`);
 
-for (const meeting of season.Meetings) {
+const meetings = cronMode
+  ? season.Meetings.slice(-LAST_GP_TO_FETCH)
+  : season.Meetings;
+
+for (const meeting of meetings) {
   let gp: GrandPrix;
   try {
     gp = await GrandPrixService.storeGrandPrix({
