@@ -2,7 +2,7 @@ name: crawler
 
 on:
   schedule:
-    - cron: "0 3,12,20 * * *" # minute 0 of hours 3, 12, and 20, every day — i.e. 03:00, 12:00, and 20:00.
+    - cron: "0 3 * * *"
   workflow_dispatch: {}
 
 jobs:
