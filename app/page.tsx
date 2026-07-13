@@ -19,13 +19,25 @@ export async function generateMetadata(
   };
 }
 
-export default async function SeasonPage(props: PageProps<'/'>) {
-  const year =
-    ((await props.searchParams)?.year as string) ?? AVAILABLE_SEASONS.at(-1);
-  const today = new Date();
-  const isCurrent = today.getFullYear() === Number(year);
+const getGPSummary = async (season: number) => {
+  const gpSummaries = await GPSummaryRepository.get(season.toString());
 
-  const gpSummaries = await GPSummaryRepository.get(year.toString());
+  // If season is the last one, show GP in a reverse order
+  if (season === AVAILABLE_SEASONS.at(-1)) {
+    return gpSummaries.reverse();
+  }
+
+  return gpSummaries;
+};
+
+export default async function SeasonPage(props: PageProps<'/'>) {
+  const year = Number(
+    (await props.searchParams)?.year ?? AVAILABLE_SEASONS.at(-1),
+  );
+  const today = new Date();
+  const isCurrent = today.getFullYear() === year;
+
+  const gpSummaries = await getGPSummary(year);
 
   return (
     <div className="min-h-screen bg-cream text-ink">
