@@ -80,23 +80,29 @@ for (const meeting of meetings) {
     });
   }
 
-  let racingNumberToDriverId = await DriversService.storeDrivers(
-    gp.qualifyingPath,
-  );
-  await QualifyingService.storeQualifying({
-    gpId: gp.id,
-    qualifyingPath: gp.qualifyingPath,
-    racingNumberToDriverId,
-    isSprint: false,
-  });
+  if (gp.qualifyingPath) {
+    const racingNumberToDriverId = await DriversService.storeDrivers(
+      gp.qualifyingPath,
+    );
+    await QualifyingService.storeQualifying({
+      gpId: gp.id,
+      qualifyingPath: gp.qualifyingPath,
+      racingNumberToDriverId,
+      isSprint: false,
+    });
+  }
 
-  racingNumberToDriverId = await DriversService.storeDrivers(gp.racePath);
-  await RaceService.storeRace({
-    gpId: gp.id,
-    racePath: gp.racePath,
-    racingNumberToDriverId,
-    isSprint: false,
-  });
+  if (gp.racePath) {
+    const racingNumberToDriverId = await DriversService.storeDrivers(
+      gp.racePath,
+    );
+    await RaceService.storeRace({
+      gpId: gp.id,
+      racePath: gp.racePath,
+      racingNumberToDriverId,
+      isSprint: false,
+    });
+  }
 
   console.log(`Done! Inserted data for: ${gp.name}`);
 }

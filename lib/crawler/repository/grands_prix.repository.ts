@@ -14,8 +14,8 @@ type GrandPrixRow = {
   location: string;
   sprint_qualifying_path?: string;
   sprint_path?: string;
-  qualifying_path: string;
-  race_path: string;
+  qualifying_path?: string;
+  race_path?: string;
 };
 
 const GrandsPrixRepository = {

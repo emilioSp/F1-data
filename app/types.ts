@@ -2,10 +2,10 @@ export type GpSummary = {
   name: string;
   circuitName: string;
   countryCode: string;
-  winnerName: string;
-  winnerTeamName: string;
-  winnerTeamColor: string;
-  winnerHeadshotUrl: string;
+  winnerName: string | null;
+  winnerTeamName: string | null;
+  winnerTeamColor: string | null;
+  winnerHeadshotUrl: string | null;
   poleName: string;
   poleTeamName: string;
   poleTeamColor: string;
@@ -14,13 +14,18 @@ export type GpSummary = {
   location: string;
   number: number;
   officialName: string;
-  raceDate: string;
-  type: 'sprint_qualifiyng' | 'qualifying' | 'sprint' | 'race';
-  raceAirTemp: string;
-  raceTrackTemp: string;
-  raceHumidity: string;
+  raceDate: string | null;
+  type: 'sprint_qualifiyng' | 'qualifying' | 'sprint' | 'race' | null;
+  raceAirTemp: string | null;
+  raceTrackTemp: string | null;
+  raceHumidity: string | null;
+  qualiAirTemp: string;
+  qualiTrackTemp: string;
+  qualiHumidity: string;
   year: number;
 };
+
+export type WeatherSource = 'race' | 'qualifying';
 
 export type GpSitemapEntry = {
   id: number;
