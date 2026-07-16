@@ -13,7 +13,10 @@ export const MONTHS = [
   'DEC',
 ];
 
-export function fmtDate(s: string): string {
+export function fmtDate(s: string | null): string {
+  if (s == null) {
+    return 'N/A';
+  }
   const d = new Date(s);
   return `${String(d.getUTCDate()).padStart(2, '0')} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
 }

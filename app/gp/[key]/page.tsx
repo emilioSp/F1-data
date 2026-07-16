@@ -58,7 +58,7 @@ export default async function GPDetailPage(props: PageProps<'/gp/[key]'>) {
     GPDetailsRepository.getRaceResults({ gpId, isSprint }),
   ]);
 
-  if (!qualifyingSessionDetails || !raceSessionDetails) {
+  if (!qualifyingSessionDetails) {
     return null;
   }
 
@@ -67,7 +67,7 @@ export default async function GPDetailPage(props: PageProps<'/gp/[key]'>) {
       <div className="mb-[22px] grid grid-cols-[auto_1fr] items-center gap-[14px]">
         <Logo size={34} />
         <a
-          href={`/?year=${raceSessionDetails.year}`}
+          href={`/?year=${qualifyingSessionDetails.year}`}
           className="font-sans font-medium text-red"
           style={{ fontSize: '13px' }}
         >
