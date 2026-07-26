@@ -7,6 +7,7 @@ import DriversStandingsService from './service/drivers_standings.service.ts';
 import GrandPrixService from './service/grands_prix.service.ts';
 import QualifyingService from './service/qualifying.service.ts';
 import RaceService from './service/race.service.ts';
+import TeamsStandingsService from './service/teams_standings.service.ts';
 import SessionNotFound from './session_not_found.error.ts';
 import type { GrandPrix } from './types.ts';
 
@@ -86,6 +87,10 @@ for (const meeting of meetings) {
         racePath: gp.sprintPath,
         racingNumberToDriverId,
       });
+      await TeamsStandingsService.storeTeamsStandings({
+        session_id: session.id,
+        racePath: gp.sprintPath,
+      });
     }
   }
 
@@ -117,6 +122,10 @@ for (const meeting of meetings) {
         session_id: session.id,
         racePath: gp.racePath,
         racingNumberToDriverId,
+      });
+      await TeamsStandingsService.storeTeamsStandings({
+        session_id: session.id,
+        racePath: gp.racePath,
       });
     }
   }

@@ -28,6 +28,12 @@ export type DriverStanding = {
   points: number;
 };
 
+export type TeamStanding = {
+  session_id: number;
+  team_name: string;
+  points: number;
+};
+
 export type QualifyingResult = {
   id?: string;
   session_id: number;
