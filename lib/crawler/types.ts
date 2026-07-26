@@ -22,6 +22,12 @@ export type Driver = {
   headshot_url: string;
 };
 
+export type DriverStanding = {
+  session_id: number;
+  driver_id: string;
+  points: number;
+};
+
 export type QualifyingResult = {
   id?: string;
   session_id: number;
