@@ -17,11 +17,14 @@ const TeamsStandingsService = {
     );
 
     for (const team of Object.values(prediction.Teams)) {
-      await TeamsStandingsRepository.upsert({
-        team_name: team.TeamName,
-        points: Math.floor(team.PredictedPoints), // api can return decimal points. I have no words.
-        session_id,
-      });
+      if (team.TeamName) {
+        // api can return undefined team name. I have no words.
+        await TeamsStandingsRepository.upsert({
+          team_name: team.TeamName,
+          points: Math.floor(team.PredictedPoints), // api can return decimal points. I have no words.
+          session_id,
+        });
+      }
     }
   },
 };
