@@ -23,7 +23,7 @@ const DriversStandingsService = {
         // public api are not reliable :(
         await DriversStandingsRepository.upsert({
           driver_id: driverId,
-          points: Math.floor(prediction.Drivers[racingNumber].PredictedPoints), // api can return decimal points. I have no words.
+          points: prediction.Drivers[racingNumber].PredictedPoints,
           session_id,
         });
       }

@@ -21,7 +21,7 @@ const TeamsStandingsService = {
         // api can return undefined team name. I have no words.
         await TeamsStandingsRepository.upsert({
           team_name: team.TeamName,
-          points: Math.floor(team.PredictedPoints), // api can return decimal points. I have no words.
+          points: team.PredictedPoints,
           session_id,
         });
       }
