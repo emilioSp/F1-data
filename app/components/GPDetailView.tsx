@@ -1,5 +1,6 @@
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import GPInfo from '@/app/components/GPInfo';
 import TableDriversStandings from '@/app/components/TableDriversStandings';
@@ -16,6 +17,8 @@ import type {
 } from '@/app/types';
 
 type Tab = 'qualifying' | 'race' | 'drivers' | 'teams';
+
+const TABS: Tab[] = ['qualifying', 'race', 'drivers', 'teams'];
 
 export default function GPDetailView({
   qualifyingSessionDetails,
@@ -37,7 +40,26 @@ export default function GPDetailView({
   const hasRace = raceSessionDetails !== undefined;
   const hasDriversStandings = driversStandings.length > 0;
   const hasTeamsStandings = teamsStandings.length > 0;
-  const [tab, setTab] = useState<Tab>(hasRace ? 'race' : 'qualifying');
+
+  const searchParams = useSearchParams();
+  const [tab, setTabState] = useState<Tab>(() => {
+    const requestedTab = searchParams.get('tab');
+    return TABS.includes(requestedTab as Tab)
+      ? (requestedTab as Tab)
+      : hasRace
+        ? 'race'
+        : 'qualifying';
+  });
+
+  // Update the URL via the raw History API rather than next/navigation's
+  // router — router.push/replace triggers an RSC fetch that re-runs every
+  // DB query in page.tsx, even though none of them depend on `tab`.
+  const setTab = (next: Tab) => {
+    setTabState(next);
+    const params = new URLSearchParams(window.location.search);
+    params.set('tab', next);
+    window.history.replaceState(null, '', `?${params.toString()}`);
+  };
 
   const activeSessionDetails =
     tab !== 'qualifying' && raceSessionDetails
