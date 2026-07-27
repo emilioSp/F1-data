@@ -5,15 +5,17 @@ import GPInfo from '@/app/components/GPInfo';
 import TableDriversStandings from '@/app/components/TableDriversStandings';
 import TableQualifyingResults from '@/app/components/TableQualifyingResults';
 import TableRaceResults from '@/app/components/TableRaceResults';
+import TableTeamsStandings from '@/app/components/TableTeamsStandings';
 import WeatherData from '@/app/components/WeatherData';
 import type {
   GPDetailsQualifyingResults,
   GPDetailsRaceResults,
   GPDriversStandings,
   GPSessionDetails,
+  GPTeamsStandings,
 } from '@/app/types';
 
-type Tab = 'qualifying' | 'race' | 'standings';
+type Tab = 'qualifying' | 'race' | 'drivers' | 'teams';
 
 export default function GPDetailView({
   qualifyingSessionDetails,
@@ -21,6 +23,7 @@ export default function GPDetailView({
   qualifyingResults,
   raceResults,
   driversStandings,
+  teamsStandings,
   isSprint,
 }: {
   qualifyingSessionDetails: GPSessionDetails;
@@ -28,10 +31,12 @@ export default function GPDetailView({
   qualifyingResults: GPDetailsQualifyingResults[];
   raceResults: GPDetailsRaceResults[];
   driversStandings: GPDriversStandings[];
+  teamsStandings: GPTeamsStandings[];
   isSprint: boolean;
 }) {
   const hasRace = raceSessionDetails !== undefined;
-  const hasStandings = driversStandings.length > 0;
+  const hasDriversStandings = driversStandings.length > 0;
+  const hasTeamsStandings = teamsStandings.length > 0;
   const [tab, setTab] = useState<Tab>(hasRace ? 'race' : 'qualifying');
 
   const activeSessionDetails =
@@ -61,7 +66,7 @@ export default function GPDetailView({
       </div>
 
       <div className="mt-[30px]">
-        <div className="grid grid-flow-col auto-cols-max gap-1 border-b border-divider">
+        <div className="flex flex-col items-start border-b border-divider min-[750px]:flex-row">
           <TabButton
             active={tab === 'qualifying'}
             onClick={() => setTab('qualifying')}
@@ -76,11 +81,18 @@ export default function GPDetailView({
             {raceLabel}
           </TabButton>
           <TabButton
-            active={tab === 'standings'}
-            disabled={!hasStandings}
-            onClick={() => setTab('standings')}
+            active={tab === 'drivers'}
+            disabled={!hasDriversStandings}
+            onClick={() => setTab('drivers')}
           >
-            Standings
+            Drivers standings
+          </TabButton>
+          <TabButton
+            active={tab === 'teams'}
+            disabled={!hasTeamsStandings}
+            onClick={() => setTab('teams')}
+          >
+            Teams standings
           </TabButton>
         </div>
 
@@ -89,8 +101,10 @@ export default function GPDetailView({
             <TableQualifyingResults results={qualifyingResults} />
           ) : tab === 'race' ? (
             <TableRaceResults results={raceResults} />
-          ) : (
+          ) : tab === 'drivers' ? (
             <TableDriversStandings results={driversStandings} />
+          ) : (
+            <TableTeamsStandings results={teamsStandings} />
           )}
         </div>
       </div>
@@ -118,7 +132,7 @@ function TabButton({
         disabled
           ? 'cursor-not-allowed border-b-2 border-transparent font-medium text-faint'
           : active
-            ? 'cursor-pointer border-b-2 border-red font-semibold text-ink'
+            ? 'cursor-pointer border-b-2 border-transparent font-semibold text-ink min-[750px]:border-red'
             : 'cursor-pointer border-b-2 border-transparent font-medium text-muted'
       }`}
     >

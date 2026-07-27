@@ -45,6 +45,7 @@ export default async function GPDetailPage(props: PageProps<'/gp/[key]'>) {
     qualifyingResults,
     raceResults,
     driversStandings,
+    teamsStandings,
   ] = await Promise.all([
     GPDetailsRepository.getSessionDetails({
       gpId,
@@ -59,6 +60,7 @@ export default async function GPDetailPage(props: PageProps<'/gp/[key]'>) {
     GPDetailsRepository.getSprintQualifyingResults({ gpId, isSprint }),
     GPDetailsRepository.getRaceResults({ gpId, isSprint }),
     GPStandingsRepository.getSessionDriversStandings({ gpId, isSprint }),
+    GPStandingsRepository.getSessionTeamsStandings({ gpId, isSprint }),
   ]);
 
   if (!qualifyingSessionDetails) {
@@ -84,6 +86,7 @@ export default async function GPDetailPage(props: PageProps<'/gp/[key]'>) {
         qualifyingResults={qualifyingResults}
         raceResults={raceResults}
         driversStandings={driversStandings}
+        teamsStandings={teamsStandings}
         isSprint={isSprint}
       />
     </div>

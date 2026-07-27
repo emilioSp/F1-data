@@ -1,4 +1,4 @@
-import type { GPDriversStandings } from '@/app/types';
+import type { GPDriversStandings, GPTeamsStandings } from '@/app/types';
 import { DB_SESSION_TYPES } from '@/lib/crawler/types';
 import db from '@/lib/db';
 
@@ -24,6 +24,22 @@ const GPStandingsRepository = {
       .innerJoin('grands_prix as gp', 'gp.id', 's.gp_id')
       .where('gp.id', gpId)
       .orderBy('ds.points', 'DESC');
+
+    isSprint
+      ? queryBuilder.where('s.type', DB_SESSION_TYPES.SPRINT)
+      : queryBuilder.where('s.type', DB_SESSION_TYPES.RACE);
+
+    const rows = await queryBuilder;
+    return rows;
+  },
+  getSessionTeamsStandings: async ({ gpId, isSprint }: GpStandingsInput) => {
+    const queryBuilder = db
+      .select<GPTeamsStandings[]>('ts.team_name', 'ts.points')
+      .from('teams_standings as ts')
+      .innerJoin('sessions as s', 's.id', 'ts.session_id')
+      .innerJoin('grands_prix as gp', 'gp.id', 's.gp_id')
+      .where('gp.id', gpId)
+      .orderBy('ts.points', 'DESC');
 
     isSprint
       ? queryBuilder.where('s.type', DB_SESSION_TYPES.SPRINT)
