@@ -82,12 +82,12 @@ export type GPDriversStandings = {
   teamName: string;
   teamColor: string;
   headshotUrl: string;
-  points: number;
+  points: string;
   sessionId: number;
 };
 
 export type GPTeamsStandings = {
   teamName: string;
-  points: number;
+  points: string;
   sessionId: number;
 };

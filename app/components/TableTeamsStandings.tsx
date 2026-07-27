@@ -1,4 +1,5 @@
 import type { GPTeamsStandings } from '@/app/types';
+import { displayPoints } from '@/app/utils/points';
 
 const COLS = 'grid-cols-[40px_1fr_76px]';
 
@@ -28,7 +29,7 @@ export default function TableTeamsStandings({
             {r.teamName}
           </div>
           <div className="text-right font-mono text-[14px] font-semibold text-ink">
-            {r.points}
+            {displayPoints(r.points)}
           </div>
         </div>
       ))}
