@@ -75,3 +75,19 @@ export type GPSessionDetails = {
   trackTemp: string;
   humidity: string;
 };
+
+export type GPDriversStandings = {
+  driverName: string;
+  racingNumber: number;
+  teamName: string;
+  teamColor: string;
+  headshotUrl: string;
+  points: number;
+  sessionId: number;
+};
+
+export type GPTeamsStandings = {
+  teamName: string;
+  points: number;
+  sessionId: number;
+};

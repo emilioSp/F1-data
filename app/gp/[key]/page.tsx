@@ -4,6 +4,7 @@ import Logo from '@/app/components/Logo';
 import GPDetailsRepository, {
   getCachedSessionDetails,
 } from '@/app/repository/gp_details.repository';
+import GPStandingsRepository from '@/app/repository/gp_standings.repository';
 import { DB_SESSION_TYPES } from '@/lib/crawler/types';
 
 function parseKey(key: string) {
@@ -43,6 +44,7 @@ export default async function GPDetailPage(props: PageProps<'/gp/[key]'>) {
     raceSessionDetails,
     qualifyingResults,
     raceResults,
+    driversStandings,
   ] = await Promise.all([
     GPDetailsRepository.getSessionDetails({
       gpId,
@@ -56,6 +58,7 @@ export default async function GPDetailPage(props: PageProps<'/gp/[key]'>) {
     ),
     GPDetailsRepository.getSprintQualifyingResults({ gpId, isSprint }),
     GPDetailsRepository.getRaceResults({ gpId, isSprint }),
+    GPStandingsRepository.getSessionDriversStandings({ gpId, isSprint }),
   ]);
 
   if (!qualifyingSessionDetails) {
@@ -80,6 +83,7 @@ export default async function GPDetailPage(props: PageProps<'/gp/[key]'>) {
         raceSessionDetails={raceSessionDetails}
         qualifyingResults={qualifyingResults}
         raceResults={raceResults}
+        driversStandings={driversStandings}
         isSprint={isSprint}
       />
     </div>
