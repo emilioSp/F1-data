@@ -18,14 +18,12 @@ test('renders the race session weather (air, track, humidity)', async ({
   // Fixture's race session (e2e/fixtures/seed.ts): air_temp 22, track_temp 28,
   // humidity 45. Air/track render through `Number().toFixed(1)`; humidity
   // renders the raw NUMERIC(5,2) string as-is, hence the "45.00" not "45".
-  await expect(page.getByText('22.0 C°')).toBeVisible();
+  await expect(page.getByText('223.0 C°')).toBeVisible();
   await expect(page.getByText('28.0 C°')).toBeVisible();
   await expect(page.getByText('45.00 %')).toBeVisible();
 });
 
-test('navigates to the GP detail page via the view link', async ({
-  page,
-}) => {
+test('navigates to the GP detail page via the view link', async ({ page }) => {
   await page.goto('/?year=1900');
 
   await page.getByText('View →').click();
