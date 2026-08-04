@@ -27,7 +27,11 @@ export default function GPSummary({ gpSummary }: { gpSummary: GpSummary }) {
   );
 
   return (
-    <Link href={`/gp/${gpSummary.id}-${type}`} className="block h-full">
+    <Link
+      href={`/gp/${gpSummary.id}-${type}`}
+      className="block h-full"
+      data-testid={`${gpSummary.id}-${type}`}
+    >
       <div className="f1-tile relative grid h-full cursor-pointer rounded-[8px] border border-card-border bg-card p-[20px_22px_18px]">
         <div className="grid grid-cols-[1fr_auto] items-start gap-3">
           <div className="grid grid-cols-[1fr_2fr] auto-cols-auto items-center gap-[9px]">

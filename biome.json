@@ -10,6 +10,8 @@
     "includes": [
       "**",
       "!!next-env.d.ts",
+      "!!**/playwright-report",
+      "!!**/test-results",
       "!!**/node_modules",
       "!!**/dist",
       "!!**/.next",

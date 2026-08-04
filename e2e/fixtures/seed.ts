@@ -1,16 +1,24 @@
 import DriversRepository from '../../lib/crawler/repository/drivers.repository.ts';
+import DriversStandingsRepository from '../../lib/crawler/repository/drivers_standings.repository.ts';
 import GrandsPrixRepository from '../../lib/crawler/repository/grands_prix.repository.ts';
 import QualifyingResultsRepository from '../../lib/crawler/repository/qualifying_results.repository.ts';
 import RaceResultsRepository from '../../lib/crawler/repository/race_results.repository.ts';
 import SessionsRepository from '../../lib/crawler/repository/sessions.repository.ts';
+import TeamsStandingsRepository from '../../lib/crawler/repository/teams_standings.repository.ts';
 import { DB_SESSION_TYPES } from '../../lib/crawler/types.ts';
 import db from '../../lib/db.ts';
 
-// Season 1900 doesn't exist in AVAILABLE_SEASONS, so this fixture can never
-// collide with real hydrated data.
-const GP_ID = 1900000001;
-const QUALIFYING_SESSION_ID = 1900000011;
-const RACE_SESSION_ID = 1900000012;
+import {
+  FUTURE_GP_ID,
+  FUTURE_QUALIFYING_SESSION_ID,
+  GP_ID,
+  QUALIFYING_SESSION_ID,
+  RACE_POINTS,
+  RACE_SESSION_ID,
+  SPRINT_POINTS,
+  SPRINT_QUALIFYING_SESSION_ID,
+  SPRINT_SESSION_ID,
+} from './constants.ts';
 
 async function seed() {
   await GrandsPrixRepository.upsert({
@@ -24,6 +32,8 @@ async function seed() {
     location: 'Testville',
     qualifying_path: '/test/qualifying/',
     race_path: '/test/race/',
+    sprint_qualifying_path: '/test/sprint-qualifying/',
+    sprint_path: '/test/sprint/',
   });
 
   const now = new Date().toISOString();
@@ -51,6 +61,24 @@ async function seed() {
     air_temp: 22,
     track_temp: 28,
     humidity: 45,
+    ...commonSessionFields,
+  });
+
+  await SessionsRepository.upsert({
+    id: SPRINT_QUALIFYING_SESSION_ID,
+    type: DB_SESSION_TYPES.SPRINT_QUALIFYING,
+    air_temp: 19,
+    track_temp: 24,
+    humidity: 52,
+    ...commonSessionFields,
+  });
+
+  await SessionsRepository.upsert({
+    id: SPRINT_SESSION_ID,
+    type: DB_SESSION_TYPES.SPRINT,
+    air_temp: 21,
+    track_temp: 27,
+    humidity: 48,
     ...commonSessionFields,
   });
 
@@ -110,6 +138,159 @@ async function seed() {
     gap_to_position_ahead: '+0.500',
     dnf: false,
     number_of_pit_stops: 1,
+  });
+
+  // ── Sprint qualifying results (winner takes pole) ──
+  await QualifyingResultsRepository.upsert({
+    session_id: SPRINT_QUALIFYING_SESSION_ID,
+    driver_id: winner.id,
+    position: 1,
+    q1_time: '1:29.500',
+    q2_time: '1:28.500',
+    q3_time: '1:27.500',
+    knocked_out: false,
+  });
+
+  await QualifyingResultsRepository.upsert({
+    session_id: SPRINT_QUALIFYING_SESSION_ID,
+    driver_id: runnerUp.id,
+    position: 2,
+    q1_time: '1:30.000',
+    q2_time: '1:29.000',
+    q3_time: '1:28.000',
+    knocked_out: false,
+  });
+
+  // ── Sprint results (runner-up wins the sprint) ──
+  await RaceResultsRepository.upsert({
+    session_id: SPRINT_SESSION_ID,
+    driver_id: runnerUp.id,
+    position: 1,
+    best_laptime: '1:31.000',
+    gap_to_leader: null,
+    gap_to_position_ahead: null,
+    dnf: false,
+    number_of_pit_stops: 0,
+  });
+
+  await RaceResultsRepository.upsert({
+    session_id: SPRINT_SESSION_ID,
+    driver_id: winner.id,
+    position: 2,
+    best_laptime: '1:31.500',
+    gap_to_leader: '+0.500',
+    gap_to_position_ahead: '+0.500',
+    dnf: false,
+    number_of_pit_stops: 0,
+  });
+
+  // ── Standings ──
+  // Sprint: runner-up P1 → 8 pts, winner P2 → 7 pts.
+  // Race:   winner P1 → 25 pts, runner-up P2 → 18 pts.
+  // Standings are stored per session as a championship snapshot as of that
+  // session. The race snapshot is cumulative (sprint + race points).
+  // Qualifying awards no points → no standings rows for qualifying sessions.
+  const sprintWinnerPts = SPRINT_POINTS[0]; // 8 — runner-up won the sprint
+  const sprintRunnerUpPts = SPRINT_POINTS[1]; // 7
+  const raceWinnerPts = RACE_POINTS[0]; // 25
+  const raceRunnerUpPts = RACE_POINTS[1]; // 18
+
+  // Sprint-session snapshot (championship as of the sprint)
+  await DriversStandingsRepository.upsert({
+    session_id: SPRINT_SESSION_ID,
+    driver_id: runnerUp.id,
+    points: sprintWinnerPts,
+  });
+  await DriversStandingsRepository.upsert({
+    session_id: SPRINT_SESSION_ID,
+    driver_id: winner.id,
+    points: sprintRunnerUpPts,
+  });
+  await TeamsStandingsRepository.upsert({
+    session_id: SPRINT_SESSION_ID,
+    team_name: 'Test Team',
+    points: sprintWinnerPts + sprintRunnerUpPts,
+  });
+
+  // Race-session snapshot (cumulative: sprint + race)
+  await DriversStandingsRepository.upsert({
+    session_id: RACE_SESSION_ID,
+    driver_id: winner.id,
+    points: sprintRunnerUpPts + raceWinnerPts,
+  });
+  await DriversStandingsRepository.upsert({
+    session_id: RACE_SESSION_ID,
+    driver_id: runnerUp.id,
+    points: sprintWinnerPts + raceRunnerUpPts,
+  });
+  await TeamsStandingsRepository.upsert({
+    session_id: RACE_SESSION_ID,
+    team_name: 'Test Team',
+    points:
+      sprintWinnerPts + sprintRunnerUpPts + raceWinnerPts + raceRunnerUpPts,
+  });
+
+  // ─── GP 2: Future Grand Prix (qualifying only — race not started yet) ──
+  await GrandsPrixRepository.upsert({
+    id: FUTURE_GP_ID,
+    number: 2,
+    year: 1900,
+    official_name: 'Future Grand Prix',
+    name: 'Future GP',
+    circuit_name: 'Future Circuit',
+    country_code: 'YY',
+    location: 'Future City',
+    qualifying_path: '/future/qualifying/',
+  });
+
+  await SessionsRepository.upsert({
+    id: FUTURE_QUALIFYING_SESSION_ID,
+    type: DB_SESSION_TYPES.QUALIFYING,
+    air_temp: 18,
+    track_temp: 22,
+    humidity: 60,
+    gp_id: FUTURE_GP_ID,
+    start_date: now,
+    end_date: now,
+    start_date_local: now,
+    end_date_local: now,
+    gmt_offset: '+00:00',
+  });
+
+  const poleSitter = await DriversRepository.upsert({
+    racing_number: 3,
+    name: 'test pole sitter',
+    team_name: 'Future Team',
+    team_color: '00ff00',
+    headshot_url: '',
+  });
+
+  const challenger = await DriversRepository.upsert({
+    racing_number: 4,
+    name: 'test challenger',
+    team_name: 'Future Team',
+    team_color: 'ffa500',
+    headshot_url: '',
+  });
+
+  await QualifyingResultsRepository.upsert({
+    session_id: FUTURE_QUALIFYING_SESSION_ID,
+    driver_id: poleSitter.id,
+    position: 1,
+    q1_time: '1:31.000',
+    q2_time: '1:30.000',
+    q3_time: '1:29.500',
+    knocked_out: false,
+  });
+
+  await QualifyingResultsRepository.upsert({
+    session_id: FUTURE_QUALIFYING_SESSION_ID,
+    driver_id: challenger.id,
+    position: 2,
+    q1_time: '1:31.500',
+    q2_time: '1:30.500',
+    q3_time: '1:30.000',
+    knocked_out: false,
   });
 }
 
